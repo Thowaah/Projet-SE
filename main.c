@@ -90,6 +90,9 @@ int main(int argc,char* argv[]){
         nOpt++;
         printf("option c\n");
         break;
+      case '?':
+        printf("Argument non reconnu");
+        break;
       default:
         printf("fonction normale\n");
         break;
