@@ -11,6 +11,7 @@ void raler(int retour, char const* desc){
   }
 }
 /*
+//convertion d'un string en int
 int toInt(char* str){
   if(str[9]<"0" || str[9]>"9"){
     perror("NaN");
@@ -20,9 +21,13 @@ int toInt(char* str){
   else return atoi(str);
 }
 */
+
+
 /*
+//permet de reveiller
 void reveil(int signum){}
 
+//fonction de dodo
 void sleep(int nsec)
 {
 	if(signal(SIGALRM, reveil)==SIG_ERR)….
@@ -30,26 +35,32 @@ void sleep(int nsec)
 	Pause() ;
 }
 
+//execution du programme ici
 int fonction2(char* programme, char* tabArg[], int retours, int temps, char* format){
   int err;
   err = execlp(programme, programme, )
 }
 
+//fonction appelée par detecter, permet de lancer le programme, et ensuite de dormir pendant 'interval' secondes
 int fonction1(char* programme, char* tabArg[], int interval, int retours, int temps, char* format){
   fonction2(programme, retours, temps, format);
   sleep(interval);
 }
 */
+
+//première fonction appelée par la main: permet de lancer le programme à l'infini ou un nombre défini de fois
 int detecter(char* programme, char* tabArg[], int interval, int lancement, int retours, int temps, char* format){
-  printf("%s\n", programme);
+  printf("%s\n", programme);	//test
   /*
   int i;
+  //si un certain nombre de lancements
   if(interval>0){
     for(i=lancement; i>=0; i--){
       fonction1(programme, interval,retours, temps, format);
       }
     }
   }else{
+  //sinon boucle infinie
     while(1)
       fonction1(interval, retours, temps, format);
   }
@@ -59,16 +70,18 @@ int detecter(char* programme, char* tabArg[], int interval, int lancement, int r
 
 int main(int argc,char* argv[]){
 
-  int interval = 10000;
-  int lancement = 0;
-  int retours = 0;
-  int temps = 0;
-  char* format = malloc(10*sizeof(char));
-  char c;
-  int nOpt=0;
-  int i, ind = 0;
-  char** tabArg;
+  int interval = 10000;	//interval de temps entre 2 lancements
+  int lancement = 0;	//limite de lancements 0= infini, sinon le nbr entré
+  int retours = 0;	//checker les codes de retour ou pas
+  int temps = 0;	//afficher l'heure à chaque lancement
+  char* format = malloc(10*sizeof(char));	//format de l'heure
+  char c;		//sert pour getopt
+  int nOpt=0;		//décalage entre argv[0] et le programme et ses options
+  int i, ind = 0;	
+  char** tabArg;	//tableau des arguments du programme à lancer
 
+	
+//ici on récupère les options
   while((c = getopt(argc, argv, "+t:i:l:c"))!= -1)
     switch(c){
       case 'i':
@@ -97,20 +110,22 @@ int main(int argc,char* argv[]){
         printf("fonction normale\n");
         break;
   }
+	//tests des arguments entrés
   for(i=0; i<nOpt; i++)
     printf("%s,", argv[i]);
   printf("\n");
   if(argc<=nOpt+1)
-    printf("saisir le nom du programme\n");
+    printf("saisir le nom du programme\n");	//test si il y a le un programme ou pas
   else{
     ind=0;
-    tabArg=malloc((argc-nOpt)*sizeof(char*));
+    tabArg=malloc((argc-nOpt)*sizeof(char*));	//on range les arguments du programme à executer dans un tableau
     for(i=nOpt+1; i<argc; i++){
       tabArg[ind]=malloc(strlen(argv[i])*sizeof(char)+1);
       tabArg[ind]=argv[i];
       ind++;
     }
-    detecter(argv[nOpt+1], tabArg, interval, lancement, retours, temps, format);
+    detecter(argv[nOpt+1], tabArg, interval, lancement, retours, temps, format); //on lance le programme à proprement parler
   }
+	//ajouter les free
   return 0;
 }
